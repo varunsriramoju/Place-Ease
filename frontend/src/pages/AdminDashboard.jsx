@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import API from '../services/api';
+import NotificationBell from '../components/NotificationBell';
+import AnalyticsDashboard from '../components/admin/AnalyticsDashboard';
+import AdminChatDashboard from '../components/chat/AdminChatDashboard';
 
 const AdminDashboard = () => {
     const { user, logout } = useAuth();
@@ -68,7 +71,9 @@ const AdminDashboard = () => {
                 <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
                     <h1 className="text-2xl font-bold text-primary">PlaceEase - Admin</h1>
                     <div className="flex items-center gap-4">
+                        <NotificationBell />
                         <span className="text-gray-700">Welcome, {user?.name}</span>
+                        <button onClick={() => navigate('/admin/profile')} className="text-blue-600 hover:text-blue-800 font-medium">My Profile</button>
                         <button
                             onClick={handleLogout}
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -98,6 +103,30 @@ const AdminDashboard = () => {
                             }`}
                     >
                         Dashboard
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('analytics')}
+                        className={`px-6 py-2 rounded-lg font-semibold ${activeTab === 'analytics'
+                            ? 'bg-primary text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-100'
+                            }`}
+                    >
+                        📊 Analytics
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('chat')}
+                        className={`px-6 py-2 rounded-lg font-semibold ${activeTab === 'chat'
+                            ? 'bg-primary text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-100'
+                            }`}
+                    >
+                        💬 Chat
+                    </button>
+                    <button
+                        onClick={() => navigate('/admin/students')}
+                        className="px-6 py-2 rounded-lg font-semibold bg-white text-gray-700 hover:bg-gray-100"
+                    >
+                        Student Directory
                     </button>
                 </div>
 
@@ -211,6 +240,14 @@ const AdminDashboard = () => {
                             <p className="text-4xl font-bold text-warning">{stats.pendingJobs}</p>
                         </div>
                     </div>
+                )}
+
+                {activeTab === 'analytics' && (
+                    <AnalyticsDashboard />
+                )}
+
+                {activeTab === 'chat' && (
+                    <AdminChatDashboard />
                 )}
             </div>
         </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import API from '../services/api';
+import NotificationBell from '../components/NotificationBell';
 
 const RecruiterDashboard = () => {
     const { user, logout } = useAuth();
@@ -124,7 +125,9 @@ const RecruiterDashboard = () => {
                 <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
                     <h1 className="text-2xl font-bold text-primary">PlaceEase - Recruiter</h1>
                     <div className="flex items-center gap-4">
+                        <NotificationBell />
                         <span className="text-gray-700">Welcome, {user?.name}</span>
+                        <button onClick={() => navigate('/recruiter/profile')} className="text-blue-600 hover:text-blue-800 font-medium">My Profile</button>
                         <button
                             onClick={handleLogout}
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
@@ -145,6 +148,12 @@ const RecruiterDashboard = () => {
                             }`}
                     >
                         My Jobs ({jobs.length})
+                    </button>
+                    <button
+                        onClick={() => navigate('/recruiter/students')}
+                        className="px-6 py-2 rounded-lg font-semibold bg-white text-gray-700 hover:bg-gray-100"
+                    >
+                        Student Directory
                     </button>
                     {activeTab === 'applications' && (
                         <button

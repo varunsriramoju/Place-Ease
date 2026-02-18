@@ -6,6 +6,10 @@ import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
 import RecruiterDashboard from './pages/RecruiterDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import MyProfile from './pages/MyProfile';
+import StudentDirectory from './pages/StudentDirectory';
+import AnalyticsDashboard from './components/admin/AnalyticsDashboard';
+import './index.css';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { user, loading } = useAuth();
@@ -65,10 +69,58 @@ function AppRoutes() {
                 }
             />
             <Route
+                path="/student/profile"
+                element={
+                    <ProtectedRoute allowedRoles={['STUDENT']}>
+                        <MyProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/recruiter/profile"
+                element={
+                    <ProtectedRoute allowedRoles={['RECRUITER']}>
+                        <MyProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/profile"
+                element={
+                    <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <MyProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
                 path="/admin/dashboard"
                 element={
                     <ProtectedRoute allowedRoles={['ADMIN']}>
                         <AdminDashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/analytics"
+                element={
+                    <ProtectedRoute allowedRoles={['ADMIN', 'RECRUITER']}>
+                        <AnalyticsDashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/students"
+                element={
+                    <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <StudentDirectory />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/recruiter/students"
+                element={
+                    <ProtectedRoute allowedRoles={['RECRUITER']}>
+                        <StudentDirectory />
                     </ProtectedRoute>
                 }
             />

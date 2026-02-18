@@ -1,257 +1,125 @@
-# PlaceEase - College Placement Management System
+# 🎓 PlaceEase - Smart Placement Management System
 
-A full-stack web application that automates student-job matching based on CGPA and branch eligibility with three user roles: Student, Recruiter, and Admin.
+**The Future of Campus Recruitment.** PlaceEase is a powerful, AI-assisted platform that bridges the gap between students, recruiters, and placement admins.
 
-## 🚀 Tech Stack
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 
-### Backend
-- Java 17 + Spring Boot 3.2.0
-- H2 Database (file-based)
-- Spring Security + JWT Authentication
-- Maven
+---
 
-### Frontend
-- React 18.2 + Vite 5.0
-- TailwindCSS 3.3
-- Axios for API calls
-- React Router DOM 6.20
+## 🚀 Overview
 
-## 📋 Prerequisites
+Campus placements are chaotic. **PlaceEase** brings order to the chaos with a unified system for tracking the entire recruitment lifecycle. From posting a job to the final offer letter, everything happens here.
 
-- Java 17 or higher
-- Maven 3.6+
-- Node.js 16+ and npm
-- Any modern web browser
+But it's not just a database. PlaceEase includes **advanced intelligence**:
+- 🧠 It **recommends** jobs to students based on their profile.
+- 📉 It analyzes **skill gaps** to show students what they're missing.
+- 💬 It includes a **chatbot** for instant support.
+- 🔔 Real-time **notifications** ensure no deadline is missed.
+- 📊 **Analytics** help admins optimize placement strategies.
 
-## 🛠️ Installation & Setup
+---
 
-### Backend Setup
+## ✨ Key Features
 
-1. Navigate to the backend directory:
-```bash
-cd backend
-```
+### 👨‍🎓 For Students
+*   **Smart Job Recommendations:** Our algorithm scores jobs (Skills 50%, CGPA 30%, Branch 20%) to show your best matches first.
+*   **Skill Gap Analysis:** See exactly which high-demand skills you lack based on thousands of job postings.
+*   **One-Click Apply:** Upload your resume once and apply instantly.
+*   **Chat Assistant:** Need help? Ask the PlaceEase Bot about eligibility, resume tips, or process details.
+*   **Real-time Alerts:** Get notified the second your application status changes (Shortlisted/Rejected/Offered).
 
-2. Build the project:
-```bash
-mvn clean install
-```
+### 🏢 For Recruiters
+*   **Job Management:** Post openings with detailed criteria (Branch, CGPA, CTC).
+*   **Candidate Tracking:** View applicants, download resumes, and update statuses in bulk.
+*   **Talent Search:** Filter the student database to find specific profiles.
 
-3. Run the application:
-```bash
-mvn spring-boot:run
-```
+### 👨‍💼 For Admins
+*   **Analytics Dashboard:** Visual insights into placement trends, top recruiters, and CTC distributions.
+*   **Job Approval Workflow:** Review and approve postings to ensure quality.
+*   **Student Support:** Chat directly with students to resolve complex queries.
 
-The backend server will start on `http://localhost:8080`
+---
 
-### Frontend Setup
+## 🛠️ Technology Stack
 
-1. Navigate to the frontend directory:
-```bash
-cd frontend
-```
+We built PlaceEase using industry-standard enterprise technologies for reliability and scale.
 
-2. Install dependencies:
-```bash
-npm install
-```
+### Backpack (Robust & Secure)
+| Tech | Role | Why? |
+| :--- | :--- | :--- |
+| **Java 17** | Core | Modern features (Records), LTS stability. |
+| **Spring Boot 3.2** | Framework | Production-ready, auto-configuration. |
+| **Spring Security + JWT** | Auth | Stateless, secure authentication. |
+| **Spring Data JPA** | DAO | Simplified database interactions. |
+| **H2 Database** | Storage | Fast in-memory DB for dev/test. |
+| **WebSocket (STOMP)** | Real-time | Instant notifications and chat. |
 
-3. Start the development server:
-```bash
-npm run dev
-```
+### Frontend (Fast & Responsive)
+| Tech | Role | Why? |
+| :--- | :--- | :--- |
+| **React (Vite)** | UI | Component-based, lightning-fast builds. |
+| **Tailwind CSS** | Styling | Rapid, utility-first design directly in markup. |
+| **Axios** | API Client | Clean promise-based HTTP requests. |
+| **Recharts** | Charts | Beautiful data visualization for analytics. |
 
-The frontend will be available at `http://localhost:3000`
+---
 
-## 🔑 Test Credentials
+## ⚙️ Getting Started
 
-### Student Account
-- Email: `student@college.edu`
-- Password: `password123`
-- Branch: CS, CGPA: 8.50
+Follow these steps to run PlaceEase locally.
 
-### Recruiter Account
-- Email: `recruiter@techcorp.com`
-- Password: `password123`
+### Prerequisites
+- **Java 17** or higher
+- **Node.js 18** or higher
+- **Maven** (optional, wrapper included)
 
-### Admin Account
-- Email: `admin@placeease.com`
-- Password: `password123`
+### 1️⃣ Backend Setup
+1.  Navigate to the backend folder:
+    ```bash
+    cd backend
+    ```
+2.  Run the application using the Maven wrapper:
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+    *Note: The server will start on `http://localhost:8080`.*
 
-## 📊 Database Access
+### 2️⃣ Frontend Setup
+1.  Open a new terminal and navigate to the frontend folder:
+    ```bash
+    cd frontend
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Start the development server:
+    ```bash
+    npm run dev
+    ```
+    *Note: The UI will be available at `http://localhost:5173`.*
 
-H2 Console is available at: `http://localhost:8080/h2-console`
+---
 
-- JDBC URL: `jdbc:h2:file:./data/placeease`
-- Username: `sa`
-- Password: (leave blank)
+## 📚 API Documentation
 
-## 🎯 Key Features
+We use **Swagger UI** for interactive API documentation. Once the backend is running, visit:
 
-### Student Features
-- View eligible jobs based on CGPA and branch
-- Apply for jobs with one click
-- Track application status
-- See job details including CTC, deadline, and requirements
+👉 **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
 
-### Recruiter Features
-- Post new job openings
-- View posted jobs with approval status
-- Manage applications (shortlist, reject, offer)
-- Update application status
+You can test all endpoints (Auth, Students, Jobs, Analytics) directly from the browser.
 
-### Admin Features
-- Approve or reject job postings
-- View eligible student count by branch for each job
-- Dashboard with system statistics
-- Monitor total students, recruiters, and jobs
+---
 
-## 🔐 Security Features
+## 👥 Contributors
 
-- JWT-based authentication (7-day expiry)
-- BCrypt password hashing (strength 10)
-- Role-based access control (RBAC)
-- CORS configuration for frontend
-- Protected API endpoints
+Built with ❤️ by **Varun Sriramoju**.
 
-## 🎨 API Endpoints
+For questions or support, please open an issue or contact the maintainers.
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login and get JWT token
-
-### Student
-- `GET /api/student/jobs` - Get eligible jobs (filtered)
-- `POST /api/student/apply/{jobId}` - Apply for a job
-- `GET /api/student/applications` - Get my applications
-
-### Recruiter
-- `POST /api/recruiter/jobs` - Post new job
-- `GET /api/recruiter/jobs` - Get my posted jobs
-- `GET /api/recruiter/jobs/{jobId}/applications` - Get job applications
-- `PUT /api/recruiter/applications/{id}/status` - Update application status
-
-### Admin
-- `GET /api/admin/jobs/pending` - Get pending jobs with eligibility count
-- `PUT /api/admin/jobs/{jobId}/approve` - Approve/reject job
-- `GET /api/admin/dashboard` - Get system statistics
-
-## 📝 Swagger Documentation
-
-API documentation is available at: `http://localhost:8080/swagger-ui.html`
-
-## ✅ Testing Workflow
-
-1. **Register a Student**
-   - Email: `test.student@college.edu`
-   - Role: STUDENT
-   - Branch: CS
-   - CGPA: 8.5
-
-2. **Login as Recruiter**
-   - Post a job with required CGPA: 7.5, allowed branches: ["CS", "IT"]
-
-3. **Login as Admin**
-   - Approve the job
-   - See eligibility count by branch
-
-4. **Login as Student**
-   - See the job in the feed (because CGPA 8.5 >= 7.5 and branch = CS)
-   - Apply to the job
-
-5. **Try Applying Again**
-   - Should fail with "Already applied" error
-
-6. **Login as Recruiter**
-   - View applications
-   - Update status to "SHORTLISTED"
-
-7. **Login as Student**
-   - See updated status in application tracker
-
-## 🏗️ Project Structure
-
-```
-placmement-mg-sys/
-├── backend/
-│   ├── src/main/java/com/placeease/
-│   │   ├── config/          # Security, CORS, Swagger config
-│   │   ├── controller/      # REST controllers
-│   │   ├── dto/             # Data Transfer Objects
-│   │   ├── model/           # JPA entities
-│   │   ├── repository/      # Data access layer
-│   │   ├── security/        # JWT utilities
-│   │   └── service/         # Business logic
-│   └── src/main/resources/
-│       ├── application.properties
-│       └── data.sql         # Sample data
-├── frontend/
-│   ├── src/
-│   │   ├── components/      # Reusable components
-│   │   ├── context/         # React Context (Auth)
-│   │   ├── pages/           # Page components
-│   │   ├── services/        # API service
-│   │   ├── App.jsx          # Main app with routing
-│   │   └── main.jsx         # Entry point
-│   └── public/
-└── README.md
-```
-
-## 🎓 Core Business Logic
-
-### Eligibility Filtering (Critical Feature)
-
-Students see ONLY jobs where:
-1. `job.status = 'APPROVED'`
-2. `job.deadline >= TODAY`
-3. `student.cgpa >= job.required_cgpa`
-4. `student.branch IN job.allowed_branches`
-
-This is implemented in `EligibilityService.java`:
-```java
-public List<Job> getEligibleJobs(User student) {
-    return jobRepository.findAll().stream()
-        .filter(job -> "APPROVED".equals(job.getStatus()))
-        .filter(job -> job.getDeadline().isAfter(LocalDate.now()))
-        .filter(job -> student.getCgpa().compareTo(job.getRequiredCgpa()) >= 0)
-        .filter(job -> isEligibleByBranch(student.getBranch(), job.getAllowedBranches()))
-        .collect(Collectors.toList());
-}
-```
-
-### Admin Eligibility Counter
-
-Before approving a job, admin sees how many students are eligible:
-```json
-{
-  "total": 217,
-  "breakdown": {
-    "CS": 89,
-    "IT": 67,
-    "ECE": 61
-  }
-}
-```
-
-## 🐛 Troubleshooting
-
-### Backend Issues
-- **Port 8080 already in use**: Change port in `application.properties`
-- **Database locked**: Close H2 console before restarting
-- **JWT errors**: Check secret key in `application.properties`
-
-### Frontend Issues
-- **CORS errors**: Ensure backend is running on port 8080
-- **401 Unauthorized**: Token expired, login again
-- **Blank page**: Check browser console for errors
-
-## 📄 License
-
-This project is created for educational purposes.
-
-## 👥 Support
-
-For issues or questions, please check:
-- Backend logs in terminal
-- Frontend console in browser DevTools
-- H2 database console for data verification
+---
+*© 2026 PlaceEase System. All rights reserved.*

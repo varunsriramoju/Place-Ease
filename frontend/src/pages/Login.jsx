@@ -101,12 +101,7 @@ const Login = () => {
                     </Link>
                 </p>
 
-                <div className="mt-6 p-4 bg-gray-50 rounded text-sm">
-                    <p className="font-semibold mb-2">Test Credentials:</p>
-                    <p>Student: student@college.edu / password123</p>
-                    <p>Recruiter: recruiter@techcorp.com / password123</p>
-                    <p>Admin: admin@placeease.com / password123</p>
-                </div>
+
             </div>
         </div>
     );
