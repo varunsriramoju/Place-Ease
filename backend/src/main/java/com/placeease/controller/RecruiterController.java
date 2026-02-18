@@ -90,4 +90,60 @@ public class RecruiterController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    @GetMapping("/students")
+    public ResponseEntity<?> getAllStudents(
+            @RequestParam(value = "branch", required = false) String branch,
+            @RequestParam(value = "minCgpa", required = false) Double minCgpa,
+            @RequestParam(value = "maxCgpa", required = false) Double maxCgpa,
+            @RequestParam(value = "sortBy", required = false) String sortBy) {
+        try {
+            java.math.BigDecimal min = minCgpa != null ? java.math.BigDecimal.valueOf(minCgpa) : null;
+            java.math.BigDecimal max = maxCgpa != null ? java.math.BigDecimal.valueOf(maxCgpa) : null;
+
+            List<User> students = userRepository.findStudentsWithFilters(
+                    (branch != null && !branch.isEmpty()) ? branch : null,
+                    min,
+                    max);
+
+            // Sort
+            if ("cgpa".equalsIgnoreCase(sortBy)) {
+                students.sort((a, b) -> b.getCgpa().compareTo(a.getCgpa())); // Descending
+            } else if ("name".equalsIgnoreCase(sortBy)) {
+                students.sort((a, b) -> a.getName().compareTo(b.getName()));
+            }
+
+            List<Map<String, Object>> studentDTOs = students.stream()
+                    .map(this::convertToDTO)
+                    .toList();
+
+            return ResponseEntity.ok(Map.of(
+                    "students", studentDTOs,
+                    "totalCount", students.size()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    private Map<String, Object> convertToDTO(User user) {
+        java.util.Map<String, Object> dto = new java.util.HashMap<>();
+        dto.put("id", user.getId());
+        dto.put("name", user.getName());
+        dto.put("email", user.getEmail());
+        dto.put("branch", user.getBranch());
+        dto.put("cgpa", user.getCgpa());
+        dto.put("phone", user.getPhone());
+        dto.put("resumeUrl", user.getResumeUrl());
+        dto.put("createdAt", user.getCreatedAt());
+        try {
+            if (user.getSkills() != null) {
+                dto.put("skills", objectMapper.readValue(user.getSkills(), List.class));
+            } else {
+                dto.put("skills", List.of());
+            }
+        } catch (Exception e) {
+            dto.put("skills", List.of());
+        }
+        return dto;
+    }
 }

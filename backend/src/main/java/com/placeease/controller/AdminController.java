@@ -138,4 +138,82 @@ public class AdminController {
 
         return result;
     }
+
+    @GetMapping("/students")
+    public ResponseEntity<?> getAllStudents(
+            @RequestParam(value = "branch", required = false) String branch,
+            @RequestParam(value = "minCgpa", required = false) Double minCgpa,
+            @RequestParam(value = "maxCgpa", required = false) Double maxCgpa,
+            @RequestParam(value = "sortBy", required = false) String sortBy) {
+        try {
+            BigDecimal min = minCgpa != null ? BigDecimal.valueOf(minCgpa) : null;
+            BigDecimal max = maxCgpa != null ? BigDecimal.valueOf(maxCgpa) : null;
+
+            List<User> students = userRepository.findStudentsWithFilters(
+                    (branch != null && !branch.isEmpty()) ? branch : null,
+                    min,
+                    max);
+
+            // Sort
+            if ("cgpa".equalsIgnoreCase(sortBy)) {
+                students.sort((a, b) -> b.getCgpa().compareTo(a.getCgpa())); // Descending
+            } else if ("name".equalsIgnoreCase(sortBy)) {
+                students.sort((a, b) -> a.getName().compareTo(b.getName()));
+            }
+
+            List<Map<String, Object>> studentDTOs = students.stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(Map.of(
+                    "students", studentDTOs,
+                    "totalCount", students.size()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/students/{studentId}")
+    public ResponseEntity<?> deleteStudent(@PathVariable("studentId") Long studentId) {
+        try {
+            User student = userRepository.findById(studentId)
+                    .orElseThrow(() -> new RuntimeException("Student not found"));
+
+            if (!"STUDENT".equals(student.getRole())) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Only students can be deleted through this endpoint"));
+            }
+
+            userRepository.delete(student);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Student deleted successfully",
+                    "deletedStudent", student.getName()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body(Map.of("error", "Failed to delete student: " + e.getMessage()));
+        }
+    }
+
+    private Map<String, Object> convertToDTO(User user) {
+        Map<String, Object> dto = new HashMap<>();
+        dto.put("id", user.getId());
+        dto.put("name", user.getName());
+        dto.put("email", user.getEmail());
+        dto.put("branch", user.getBranch());
+        dto.put("cgpa", user.getCgpa());
+        dto.put("phone", user.getPhone());
+        dto.put("resumeUrl", user.getResumeUrl());
+        dto.put("createdAt", user.getCreatedAt());
+        try {
+            if (user.getSkills() != null) {
+                dto.put("skills", objectMapper.readValue(user.getSkills(), List.class));
+            } else {
+                dto.put("skills", List.of());
+            }
+        } catch (Exception e) {
+            dto.put("skills", List.of());
+        }
+        return dto;
+    }
 }

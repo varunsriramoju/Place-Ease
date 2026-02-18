@@ -7,10 +7,13 @@ import com.placeease.repository.ApplicationRepository;
 import com.placeease.repository.UserRepository;
 import com.placeease.service.ApplicationService;
 import com.placeease.service.EligibilityService;
+import com.placeease.service.RecommendationService;
+import com.placeease.service.SkillGapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,6 +27,8 @@ public class StudentController {
     private final ApplicationService applicationService;
     private final UserRepository userRepository;
     private final ApplicationRepository applicationRepository;
+    private final RecommendationService recommendationService;
+    private final SkillGapService skillGapService;
 
     @GetMapping("/jobs")
     public ResponseEntity<?> getEligibleJobs(Authentication authentication) {
@@ -64,16 +69,32 @@ public class StudentController {
         }
     }
 
+    @Autowired
+    private com.placeease.service.FileStorageService fileStorageService;
+
     @PostMapping("/apply/{jobId}")
-    public ResponseEntity<?> applyForJob(@PathVariable("jobId") Long jobId, Authentication authentication) {
+    public ResponseEntity<?> applyForJob(
+            @PathVariable("jobId") Long jobId,
+            @RequestParam("resume") org.springframework.web.multipart.MultipartFile resume,
+            Authentication authentication) {
         try {
             String email = authentication.getName();
             User student = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("Student not found"));
 
+            // Store resume file
+            String resumeFilename = fileStorageService.storeFile(resume, student.getId());
+            String resumeUrl = "/api/files/resumes/" + resumeFilename;
+
+            // Update student's resume URL
+            student.setResumeUrl(resumeUrl);
+            userRepository.save(student);
+
             Application application = applicationService.applyForJob(student.getId(), jobId);
-            return ResponseEntity
-                    .ok(Map.of("message", "Application submitted successfully", "applicationId", application.getId()));
+            return ResponseEntity.ok(Map.of(
+                    "message", "Application submitted successfully",
+                    "applicationId", application.getId(),
+                    "resumeUrl", resumeUrl));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
@@ -88,6 +109,34 @@ public class StudentController {
 
             List<Application> applications = applicationService.getApplicationsByStudentId(student.getId());
             return ResponseEntity.ok(applications);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/recommendations")
+    public ResponseEntity<?> getRecommendations(Authentication authentication) {
+        try {
+            String email = authentication.getName();
+            User student = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Student not found"));
+
+            List<Map<String, Object>> recommendations = recommendationService.getRecommendations(student);
+            return ResponseEntity.ok(recommendations);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/skill-gap")
+    public ResponseEntity<?> getSkillGapAnalysis(Authentication authentication) {
+        try {
+            String email = authentication.getName();
+            User student = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Student not found"));
+
+            Map<String, Object> analysis = skillGapService.analyzeSkillGap(student);
+            return ResponseEntity.ok(analysis);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
